@@ -18,6 +18,7 @@ import {
 } from '@/app/components/ui/popover'
 import { useTranslation } from '@/contexts/translation-context'
 
+// Array of available languages with their codes and labels
 const languages = [
     { value: 'en', label: 'English' },
     { value: 'es', label: 'Spanish' },
@@ -30,7 +31,9 @@ const languages = [
 ]
 
 export function LanguageSelector() {
+    // State to control the open/closed state of the language selector popover
     const [open, setOpen] = React.useState(false)
+    // Hook to access and set the current language from the translation context
     const { language, setLanguage } = useTranslation()
 
     return (
@@ -42,23 +45,28 @@ export function LanguageSelector() {
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                 >
+                    {/* Display selected language or default text */}
                     {language ? languages.find((l) => l.value === language)?.label : 'Select language...'}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
+                    {/* Search input for languages */}
                     <CommandInput placeholder="Search language..." />
+                    {/* Message shown when no languages match the search */}
                     <CommandEmpty>No language found.</CommandEmpty>
                     <CommandGroup>
+                        {/* Map through languages to create selectable items */}
                         {languages.map((l) => (
                             <CommandItem
                                 key={l.value}
                                 onSelect={() => {
-                                    setLanguage(l.value)
-                                    setOpen(false)
+                                    setLanguage(l.value) // Set the selected language
+                                    setOpen(false) // Close the popover after selection
                                 }}
                             >
+                                {/* Checkmark icon to indicate the currently selected language */}
                                 <Check
                                     className={cn(
                                         'mr-2 h-4 w-4',

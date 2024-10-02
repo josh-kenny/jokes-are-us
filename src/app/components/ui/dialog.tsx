@@ -6,10 +6,13 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+// Root component for the Dialog
 const Dialog = DialogPrimitive.Root
 
+// Trigger component to open the Dialog
 const DialogTrigger = DialogPrimitive.Trigger
 
+// Portal component to render the Dialog outside the DOM hierarchy
 const DialogPortal = ({
     className,
     children,
@@ -23,6 +26,7 @@ const DialogPortal = ({
 )
 DialogPortal.displayName = DialogPrimitive.Portal.displayName
 
+// Overlay component for the Dialog background
 const DialogOverlay = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Overlay>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -38,6 +42,7 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+// Content component for the Dialog
 const DialogContent = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -62,6 +67,7 @@ const DialogContent = React.forwardRef<
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
+// Header component for the Dialog
 const DialogHeader = ({
     className,
     ...props
@@ -76,6 +82,7 @@ const DialogHeader = ({
 )
 DialogHeader.displayName = "DialogHeader"
 
+// Footer component for the Dialog
 const DialogFooter = ({
     className,
     ...props
@@ -90,6 +97,7 @@ const DialogFooter = ({
 )
 DialogFooter.displayName = "DialogFooter"
 
+// Title component for the Dialog
 const DialogTitle = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Title>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
@@ -105,6 +113,7 @@ const DialogTitle = React.forwardRef<
 ))
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
+// Description component for the Dialog
 const DialogDescription = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Description>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
