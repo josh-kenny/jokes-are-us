@@ -10,6 +10,13 @@ interface TranslationContextType {
 
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined)
 
+// Helper function to decode HTML entities
+function decodeHTMLEntities(text: string) {
+    const textArea = document.createElement('textarea')
+    textArea.innerHTML = text
+    return textArea.value
+}
+
 export function TranslationProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguage] = useState('en')
 
@@ -29,7 +36,8 @@ export function TranslationProvider({ children }: { children: React.ReactNode })
                 throw new Error('Translation failed')
             }
             const data = await response.json()
-            return data.data.translations[0].translatedText
+            // Decode HTML entities before returning the translated text
+            return decodeHTMLEntities(data.data.translations[0].translatedText)
         } catch (error) {
             console.error('Translation error:', error)
             return text // Return original text if translation fails

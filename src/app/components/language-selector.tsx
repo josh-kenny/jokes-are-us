@@ -43,7 +43,7 @@ export function LanguageSelector() {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className="w-[200px] justify-between bg-zinc-900"
                 >
                     {/* Display selected language or default text */}
                     {language ? languages.find((l) => l.value === language)?.label : 'Select language...'}
