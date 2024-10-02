@@ -17,7 +17,7 @@ const DialogPortal = ({
     className,
     children,
     ...props
-}: DialogPrimitive.DialogPortalProps) => (
+}: DialogPrimitive.DialogPortalProps & { className?: string }) => (
     <DialogPrimitive.Portal {...props}>
         <div className={cn(className)}>
             {children}

@@ -1,6 +1,6 @@
 # Dad Joke Generator
 
-Welcome to the Dad Joke Generator! This application is a fun, interactive way to get your daily dose of dad jokes. Built with modern web technologies, it offers a seamless user experience with multi-language support.
+I made a dad joke generator! I used create-next-app and v0 for development and UI generation. This was a great exercise to showcase how effective AI can be when creating web applications. With the help of v0 this application was built in very little time, . v0 is developed by next.js and the code it generates is a complete drop in for next.js applications. I used icanhazdadjoke and the google cloud api for functionality and broke all features down into individual components.
 
 ## Features
 
@@ -77,4 +77,4 @@ To run this project locally:
 
 1. Clone the repository
 2. Install dependencies with `npm install`
-3. Set up your environment variables in a `.env.local` file:
+3. Set up your environment variables in a `.env.local` file: GOOGLE_TRANSLATE_API_KEY Needed

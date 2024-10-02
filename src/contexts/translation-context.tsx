@@ -1,42 +1,52 @@
 'use client'
 
-import React, { createContext, useState, useContext, useEffect } from 'react'
-import axios from 'axios'
+import React, { createContext, useContext, useState } from 'react'
 
-type TranslationContextType = {
-    translate: (text: string) => Promise<string>
+interface TranslationContextType {
     language: string
     setLanguage: (lang: string) => void
+    translate: (text: string) => Promise<string>
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined)
 
-export const useTranslation = () => {
-    const context = useContext(TranslationContext)
-    if (!context) {
-        throw new Error('useTranslation must be used within a TranslationProvider')
-    }
-    return context
-}
-
-export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export function TranslationProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguage] = useState('en')
 
-    const translate = async (text: string): Promise<string> => {
-        if (language === 'en') return text
-
+    const translate = async (text: string) => {
         try {
-            const response = await axios.post('/api/translate', { text, targetLanguage: language })
-            return response.data.translatedText
+            const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${process.env.NEXT_PUBLIC_GOOGLE_TRANSLATE_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    q: text,
+                    target: language,
+                }),
+            })
+            if (!response.ok) {
+                throw new Error('Translation failed')
+            }
+            const data = await response.json()
+            return data.data.translations[0].translatedText
         } catch (error) {
             console.error('Translation error:', error)
-            return text
+            return text // Return original text if translation fails
         }
     }
 
     return (
-        <TranslationContext.Provider value={{ translate, language, setLanguage }}>
+        <TranslationContext.Provider value={{ language, setLanguage, translate }}>
             {children}
         </TranslationContext.Provider>
     )
+}
+
+export function useTranslation() {
+    const context = useContext(TranslationContext)
+    if (context === undefined) {
+        throw new Error('useTranslation must be used within a TranslationProvider')
+    }
+    return context
 }
