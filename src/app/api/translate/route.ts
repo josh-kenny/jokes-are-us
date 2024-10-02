@@ -10,11 +10,19 @@ export async function POST(req: Request) {
 
     try {
         const [translation] = await translate.translate(text, targetLanguage)
-        return NextResponse.json({ translatedText: translation })
+        return NextResponse.json(
+            { translatedText: translation },
+            {
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                },
+            }
+        )
     } catch (error) {
         console.error('Translation error:', error)
         return NextResponse.json({ error: 'Translation failed' }, { status: 500 })
     }
+
 }
 
 // Add this GET function for static export
