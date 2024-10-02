@@ -77,4 +77,5 @@ To run this project locally:
 
 1. Clone the repository
 2. Install dependencies with `npm install`
-3. Set up your environment variables in a `.env.local` file: GOOGLE_TRANSLATE_API_KEY Needed
+3. Run via `npm run dev`
+4. Set up your environment variables in a `.env.local` file: GOOGLE_TRANSLATE_API_KEY Needed
