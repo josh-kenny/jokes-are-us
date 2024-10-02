@@ -3,11 +3,19 @@
 import { useState, useEffect } from 'react'
 import { Button } from "@/app/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card"
+import { useTranslation } from '@/contexts/translation-context'
 
 export default function DadJokeGenerator() {
     const [joke, setJoke] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [uiTexts, setUiTexts] = useState({
+        cardTitle: 'Dad Joke Generator',
+        buttonText: 'Get New Joke',
+        loading: 'Loading joke...',
+        error: 'Failed to fetch joke. Please try again.',
+    })
+    const { translate, language } = useTranslation()
 
     const fetchJoke = async () => {
         setIsLoading(true)
@@ -22,9 +30,10 @@ export default function DadJokeGenerator() {
                 throw new Error('Failed to fetch joke')
             }
             const data = await response.json()
-            setJoke(data.joke)
+            const translatedJoke = await translate(data.joke)
+            setJoke(translatedJoke)
         } catch (err) {
-            setError('Failed to fetch joke. Please try again.')
+            setError(uiTexts.error)
         } finally {
             setIsLoading(false)
         }
@@ -34,15 +43,28 @@ export default function DadJokeGenerator() {
         fetchJoke()
     }, [])
 
+    useEffect(() => {
+        const translateUiTexts = async () => {
+            const translatedTexts = await Promise.all(
+                Object.entries(uiTexts).map(async ([key, value]) => [key, await translate(value)])
+            )
+            setUiTexts(Object.fromEntries(translatedTexts))
+        }
+
+        translateUiTexts()
+        fetchJoke()
+    }, [language])
+
     return (
         <div className="flex items-center w-100 justify-center bg-foreground text-background rounded-md">
-            <Card className="min-w-3/5">
+            <Card className="md:min-w-3/5">
+
                 <CardHeader>
-                    <CardTitle className="text-2xl font-bold text-center">Dad Joke Generator</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-center">{uiTexts.cardTitle}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {isLoading ? (
-                        <p className="text-center mb-4">Loading joke...</p>
+                        <p className="text-center mb-4">{uiTexts.loading}</p>
                     ) : error ? (
                         <p className="text-center mb-4 text-red-500">{error}</p>
                     ) : (
@@ -54,10 +76,10 @@ export default function DadJokeGenerator() {
                         disabled={isLoading}
                         variant="destructive"
                     >
-                        {isLoading ? 'Fetching...' : 'Get New Joke'}
+                        {isLoading ? uiTexts.loading : uiTexts.buttonText}
                     </Button>
                 </CardContent>
             </Card>
-        </div >
+        </div>
     )
 }
